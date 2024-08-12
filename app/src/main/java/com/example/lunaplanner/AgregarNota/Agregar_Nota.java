@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import androidx.appcompat.app.ActionBar;
+
 
 import com.example.lunaplanner.R;
 
@@ -19,8 +21,20 @@ public class Agregar_Nota extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agregar_nota);
 
+        // Configuración de la ActionBar
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle("");
+            actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+
+        }
+
+
         InicializarVariables();
         ObtenerDatos();
+
+
     }
 
     private void InicializarVariables(){
@@ -41,5 +55,11 @@ public class Agregar_Nota extends AppCompatActivity {
 
         Uid_Usuario.setText(uid_recuperado);
         Correo_usuario.setText(correo_recuperado);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
     }
 }
