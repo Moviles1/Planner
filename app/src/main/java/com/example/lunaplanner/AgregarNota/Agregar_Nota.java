@@ -10,6 +10,9 @@ import androidx.appcompat.app.ActionBar;
 
 import com.example.lunaplanner.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 public class Agregar_Nota extends AppCompatActivity {
 
     TextView Uid_Usuario, Correo_usuario, Fecha_hora_actual, Fecha, Estado;
@@ -30,10 +33,9 @@ public class Agregar_Nota extends AppCompatActivity {
 
         }
 
-
         InicializarVariables();
         ObtenerDatos();
-
+        Obtener_Fecha_Hora_Actual();
 
     }
 
@@ -57,6 +59,12 @@ public class Agregar_Nota extends AppCompatActivity {
         Correo_usuario.setText(correo_recuperado);
     }
 
+    private void Obtener_Fecha_Hora_Actual (){
+        String Fecha_hora_registro = new SimpleDateFormat("dd-MM-yyyy/HH:mm:ss a",
+                Locale.getDefault()).format(System.currentTimeMillis());
+    //Ejemplo: 13-11-2022/06:30:20 pm
+            Fecha_hora_actual.setText(Fecha_hora_registro);
+    }
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
