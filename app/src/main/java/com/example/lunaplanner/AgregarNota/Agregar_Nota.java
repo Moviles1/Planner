@@ -64,6 +64,7 @@ public class Agregar_Nota extends AppCompatActivity {
                 Locale.getDefault()).format(System.currentTimeMillis());
     //Ejemplo: 13-11-2022/06:30:20 pm
             Fecha_hora_actual.setText(Fecha_hora_registro);
+
     }
     @Override
     public boolean onSupportNavigateUp() {
