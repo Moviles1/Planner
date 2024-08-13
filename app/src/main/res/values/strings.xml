@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">LunaPlanner</string>
+
+    <!--Main Activity-->
+    <string name="Btn_Login">Login</string>
+    <string name="Btn_Registro">Registro</string>
+
+    <!--Actividad registro-->
+    <string name="CrearCuentaTXT">Crear una Cuenta</string>
+    <string name="NombreEt">Nombre(S)</string>
+    <string name="CorreoEt">Correo Electronico</string>
+    <string name="Contrasena">Contraseña</string>
+    <string name="ConfirmarContreasenaEt">Confirmar contraseña</string>
+    <string name="RegistrarUsuario">Registrar</string>
+    <string name="TengounaCuentaTXT">Tengo una Cuenta</string>
+
+    <!--Actividad Login-->
+    <string name="IniciarSesionTXT">Iniciar Sesion</string>
+    <string name="CorreoLogin">Correo</string>
+    <string name="PassLogin">Contraseña</string>
+    <string name="Btn_Logeo">Ingresar</string>
+    <string name="UsuarioNuevoTxt">No tienes Una cuenta?. Registrate</string>
+
+    <!--MENÚ PRINCIPAL-->
+    <string name="BienvenidoPrincipal">Bienvenido(a)</string>
+    <string name="UidPrincipal"> -- </string>
+    <string name="NombresPrincipal"> -- </string>
+    <string name="CorreoPrincipal"> -- </string>
+
+    <string name="AgregarNotas">Agregar</string>
+    <string name="ListarNotas">Mis Notas</string>
+    <string name="Archivados">Archivados</string>
+    <string name="Perfil">Perfil</string>
+    <string name="AcercaDe">Acerca De</string>
+    <string name="CerrarSesion">Salir</string>
+
+
+    <!---AGREGAR NOTA-->
+    <string name="Uid_Usuario"> Uid del usuario</string>
+    <string name="Correo_usuario">Correo de usuario</string>
+    <string name="Fecha_hora_actual">Fecha y hora actual</string>
+    <string name="Titulo"> Título </string>
+    <string name="Descripcion"> Descripcion</string>
+    <string name="Btn_Calendario">Calendario</string>
+    <string name="Fecha"> 00/00/0000 </string>
+    <string name="Estado"> No finalizado</string>
+
+</resources>
