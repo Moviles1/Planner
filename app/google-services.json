@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "413499941665",
+    "project_id": "agenda-app-2666e",
+    "storage_bucket": "agenda-app-2666e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:413499941665:android:a7c0f707b25897f1a05460",
+        "android_client_info": {
+          "package_name": "com.example.lunaplanner"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVBB9NjDEBlVWpKKGuvieABGO_BE2lyWM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -91,7 +91,7 @@
     <!-- ESTADO DE LA NOTA -->
     <TextView
         android:id="@+id/Estado"
-        android:hint="@string/Estado"
+        android:text="@string/Estado"
         android:textSize="20sp"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/worksans"

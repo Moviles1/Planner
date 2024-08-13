@@ -25,13 +25,15 @@
             android:exported="false" />
         <activity
             android:name=".AgregarNota.Agregar_Nota"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
         <activity
             android:name=".MenuPrincipal"
             android:exported="false" />
         <activity
             android:name=".Registro"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
         <activity
             android:name=".Login"
             android:exported="false"
