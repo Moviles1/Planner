@@ -42,8 +42,6 @@ public class Detalle_Nota extends AppCompatActivity {
         SetearDatosRecuperados();
     }
 
-
-
     private void InicializarVistas() {
         Id_nota_Detalle = findViewById(R.id.Id_nota_Detalle);
         Uid_Usuario_Detalle = findViewById(R.id.Uid_Usuario_Detalle);
