@@ -1,4 +1,4 @@
-package com.example.lunaplanner.NotasArchivadas;
+package com.example.lunaplanner.NotasImportantes;
 
 import android.os.Bundle;
 
@@ -10,7 +10,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.lunaplanner.R;
 
-public class Notas_Archivadas extends AppCompatActivity {
+public class Notas_Importantes extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
