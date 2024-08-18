@@ -27,7 +27,9 @@
             android:exported="false" />
         <activity
             android:name=".NotasImportantes.Notas_Importantes"
-            android:exported="false" />
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
+        </activity>
+
         <activity
             android:name=".ListarNotas.Listar_Notas"
             android:exported="false"
@@ -56,6 +58,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
