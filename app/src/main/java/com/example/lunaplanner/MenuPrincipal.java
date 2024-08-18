@@ -73,7 +73,7 @@ public class MenuPrincipal extends AppCompatActivity {
 
         Linear_Nombres = findViewById(R.id.Linear_Nombres);
         Linear_Correo = findViewById(R.id.Linear_Correo);
-        Linear_Verificacion = findViewById(R.id.Linear_Verificacion);
+        Linear_Verificacion = findViewById(R.id.Linear_Verficacion);
 
          Usuarios = FirebaseDatabase.getInstance().getReference("Usuarios");
 

@@ -46,11 +46,10 @@
     <string name="Fecha"> 00/00/0000 </string>
     <string name="Estado"> No finalizado</string>
 
-
     <!--Menu-->
     <string name="Agregar_Nota_BD">Agregar</string>
     <string name="Actualizar_Nota_BD">Actualizar</string>
-
+    <string name="Vaciar_Todas_Las_Notas">Vaciar todas las notas</string>
 
     <!--Item Nota-->
     <string name="Id_nota_Item">Id nota</string>
@@ -83,6 +82,11 @@
     <!--Cuadro de dialogo - Cuenta Verificada-->
     <string name="CuentaVerificadaTXT">Cuenta Verificada</string>
     <string name="EntendidoVerificado">Entendio</string>
+
+    <!--CUADRO DE DIÁLOGO - ELIMINAR NOTA IMPORTANTE-->
+    <string name="EliminarNotaImportanteTXT">¿Desea eliminar ésta nota importante de la lista?</string>
+    <string name="EliminarNota">Eliminar</string>
+    <string name="EliminarNotaCancelar">Cancelar</string>
 
     <!--Actualizar Nota-->
     <string name="Id_nota_A">Id nota</string>

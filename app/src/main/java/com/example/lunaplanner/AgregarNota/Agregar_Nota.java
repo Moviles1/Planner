@@ -1,5 +1,9 @@
 package com.example.lunaplanner.AgregarNota;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,21 +16,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
-
-import com.example.lunaplanner.Objetos.Nota;
-import com.example.lunaplanner.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.example.lunaplanner.Objetos.Nota;
+import com.example.lunaplanner.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
-
 
 public class Agregar_Nota extends AppCompatActivity {
 
@@ -43,14 +40,10 @@ public class Agregar_Nota extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agregar_nota);
 
-        // Configuración de la ActionBar
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle("");
-            actionBar.setDisplayShowHomeEnabled(true);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-
-        }
+        actionBar.setTitle("");
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         InicializarVariables();
         ObtenerDatos();
@@ -58,66 +51,53 @@ public class Agregar_Nota extends AppCompatActivity {
 
         Btn_Calendario.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                final Calendar caledario = Calendar.getInstance();
+            public void onClick(View view) {
+                final Calendar calendario = Calendar.getInstance();
 
-                dia = caledario.get(Calendar.DAY_OF_MONTH);
-                mes = caledario.get(Calendar.MONTH);
-                anio = caledario.get(Calendar.YEAR);
+                dia = calendario.get(Calendar.DAY_OF_MONTH);
+                mes = calendario.get(Calendar.MONTH);
+                anio = calendario.get(Calendar.YEAR);
 
                 DatePickerDialog datePickerDialog = new DatePickerDialog(Agregar_Nota.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
-                    public void onDateSet(DatePicker view, int AnioSeleccionado, int MesSeleccionado, int DiaSeleccionado) {
+                    public void onDateSet(DatePicker datePicker, int AnioSeleccionado, int MesSeleccionado, int DiaSeleccionado) {
 
-                        String diaFormateado, mesformateado;
+                        String diaFormateado, mesFormateado;
 
-                        //Obtener Dia
-                        if(DiaSeleccionado < 10){
-                            diaFormateado = "0"+String.valueOf(DiaSeleccionado);
-                            //Antes: 9/11/2024 - Ahora 09/11/2024
-
-                        }else{
+                        if (DiaSeleccionado < 10) {
+                            diaFormateado = "0" + String.valueOf(DiaSeleccionado);
+                        } else {
                             diaFormateado = String.valueOf(DiaSeleccionado);
-                            //Ejemplo 13/08/2022
                         }
 
-                        //Obtener el mes
                         int Mes = MesSeleccionado + 1;
-
-                        if (Mes < 10){
-                            mesformateado = "0"+String.valueOf(Mes);
-                            //Antes: 09/8/2024 - Ahora 09/08/2024
-                        }else {
-                            mesformateado = String.valueOf(Mes);
-                            //Ejemplo 13/10/2024
+                        if (Mes < 10) {
+                            mesFormateado = "0" + String.valueOf(Mes);
+                        } else {
+                            mesFormateado = String.valueOf(Mes);
                         }
 
-                        //seterar fecha en Textview
-                        Fecha.setText(diaFormateado + "/" + mesformateado + "/" + AnioSeleccionado);
-
+                        Fecha.setText(diaFormateado + "/" + mesFormateado + "/" + AnioSeleccionado);
                     }
-                }
-                ,anio,mes,dia);
+                }, anio, mes, dia);
                 datePickerDialog.show();
             }
         });
     }
 
-    private void InicializarVariables(){
+    private void InicializarVariables() {
         Uid_Usuario = findViewById(R.id.Uid_Usuario);
         Correo_usuario = findViewById(R.id.Correo_usuario);
         Fecha_hora_actual = findViewById(R.id.Fecha_hora_actual);
         Fecha = findViewById(R.id.Fecha);
         Estado = findViewById(R.id.Estado);
-
         Titulo = findViewById(R.id.Titulo);
         Descripcion = findViewById(R.id.Descripcion);
         Btn_Calendario = findViewById(R.id.Btn_Calendario);
-
         BD_Firebase = FirebaseDatabase.getInstance().getReference();
     }
 
-    private void ObtenerDatos(){
+    private void ObtenerDatos() {
         String uid_recuperado = getIntent().getStringExtra("Uid");
         String correo_recuperado = getIntent().getStringExtra("Correo");
 
@@ -125,17 +105,12 @@ public class Agregar_Nota extends AppCompatActivity {
         Correo_usuario.setText(correo_recuperado);
     }
 
-    private void Obtener_Fecha_Hora_Actual (){
-        String Fecha_hora_registro = new SimpleDateFormat("dd-MM-yyyy/HH:mm:ss a",
-                Locale.getDefault()).format(System.currentTimeMillis());
-    //Ejemplo: 13-11-2022/06:30:20 pm
-            Fecha_hora_actual.setText(Fecha_hora_registro);
-
+    private void Obtener_Fecha_Hora_Actual() {
+        String Fecha_hora_registro = new SimpleDateFormat("dd-MM-yyyy/HH:mm:ss a", Locale.getDefault()).format(System.currentTimeMillis());
+        Fecha_hora_actual.setText(Fecha_hora_registro);
     }
 
-    private void agregar_Nota(){
-
-        //Obtener los datos
+    private void Agregar_Nota() {
         String uid_usuario = Uid_Usuario.getText().toString();
         String correo_usuario = Correo_usuario.getText().toString();
         String fecha_hora_actual = Fecha_hora_actual.getText().toString();
@@ -143,33 +118,19 @@ public class Agregar_Nota extends AppCompatActivity {
         String descripcion = Descripcion.getText().toString();
         String fecha = Fecha.getText().toString();
         String estado = Estado.getText().toString();
+        String id_nota = BD_Firebase.push().getKey();
 
-        //Validar datos
         if (!uid_usuario.equals("") && !correo_usuario.equals("") && !fecha_hora_actual.equals("") &&
-                !titulo.equals("") && !descripcion.equals("") && ! fecha.equals("") && !estado.equals("")){
+                !titulo.equals("") && !descripcion.equals("") && !fecha.equals("") && !estado.equals("")) {
 
-            Nota nota = new Nota(correo_usuario+ "/"+fecha_hora_actual,
-                    uid_usuario,
-                    correo_usuario,
-                    fecha_hora_actual,
-                    titulo,
-                    descripcion,
-                    fecha,
-                    estado);
-
-            String Nota_usuario = BD_Firebase.push().getKey();
-            //Establecer el nombre de la BD
-            String Nombre_BD = "Notas_Publicadas";
-
-            BD_Firebase.child(Nombre_BD).child(Nota_usuario).setValue(nota);
+            Nota nota = new Nota(id_nota, uid_usuario, correo_usuario, fecha_hora_actual, titulo, descripcion, fecha, estado);
+            BD_Firebase.child("Notas_Publicadas").child(id_nota).setValue(nota);
 
             Toast.makeText(this, "Se ha agregado la nota exitosamente", Toast.LENGTH_SHORT).show();
             onBackPressed();
-        }
-        else {
+        } else {
             Toast.makeText(this, "Llenar todos los campos", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     @Override
@@ -181,17 +142,11 @@ public class Agregar_Nota extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        // Obtén el título del item del menú
-        String title = item.getTitle().toString();
-
-        // Compara el título con el string definido en strings.xml
-        if (title.equals(getString(R.string.Agregar_Nota_BD))) {
-            agregar_Nota();
+        if (item.getItemId() == R.id.Agregar_Nota_BD) {
+            Agregar_Nota();
         }
-
         return super.onOptionsItemSelected(item);
     }
-
 
     @Override
     public boolean onSupportNavigateUp() {

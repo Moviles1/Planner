@@ -53,14 +53,11 @@ public class Detalle_Nota extends AppCompatActivity {
         SetearDatosRecuperados();
         VerificarNotaImportante();
 
-        Boton_Importante.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (ComprobarNotaImportante) {
-                    Eliminar_Nota_Importante();
-                } else {
-                    Agregar_Notas_Importantes();
-                }
+        Boton_Importante.setOnClickListener(view -> {
+            if (ComprobarNotaImportante) {
+                Eliminar_Nota_Importante();
+            } else {
+                Agregar_Notas_Importantes();
             }
         });
     }
@@ -108,7 +105,6 @@ public class Detalle_Nota extends AppCompatActivity {
         if (user == null) {
             Toast.makeText(Detalle_Nota.this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show();
         } else {
-            String identificador_nota_importante = uid_usuario_R + titulo_R;
 
             HashMap<String, String> Nota_Importante = new HashMap<>();
             Nota_Importante.put("id_nota", id_nota_R);
@@ -119,22 +115,12 @@ public class Detalle_Nota extends AppCompatActivity {
             Nota_Importante.put("descripcion", descripcion_R);
             Nota_Importante.put("fecha_nota", fecha_R);
             Nota_Importante.put("estado", estado_R);
-            Nota_Importante.put("id_nota_importante", identificador_nota_importante);
 
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Usuarios");
-            reference.child(firebaseAuth.getUid()).child("Mis notas importantes").child(identificador_nota_importante)
+            reference.child(firebaseAuth.getUid()).child("Mis notas importantes").child(id_nota_R)
                     .setValue(Nota_Importante)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            Toast.makeText(Detalle_Nota.this, "Se ha añadido a notas importantes", Toast.LENGTH_SHORT).show();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(Detalle_Nota.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    .addOnSuccessListener(unused -> Toast.makeText(Detalle_Nota.this, "Se ha añadido a notas importantes", Toast.LENGTH_SHORT).show())
+                    .addOnFailureListener(e -> Toast.makeText(Detalle_Nota.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show());
         }
     }
 
@@ -142,22 +128,11 @@ public class Detalle_Nota extends AppCompatActivity {
         if (user == null) {
             Toast.makeText(Detalle_Nota.this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show();
         } else {
-            String identificador_nota_importante = uid_usuario_R + titulo_R;
-
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Usuarios");
-            reference.child(firebaseAuth.getUid()).child("Mis notas importantes").child(identificador_nota_importante)
+            reference.child(firebaseAuth.getUid()).child("Mis notas importantes").child(id_nota_R)
                     .removeValue()
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            Toast.makeText(Detalle_Nota.this, "La nota ya no es importante", Toast.LENGTH_SHORT).show();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(Detalle_Nota.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    .addOnSuccessListener(unused -> Toast.makeText(Detalle_Nota.this, "La nota ya no es importante", Toast.LENGTH_SHORT).show())
+                    .addOnFailureListener(e -> Toast.makeText(Detalle_Nota.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show());
         }
     }
 
@@ -165,10 +140,8 @@ public class Detalle_Nota extends AppCompatActivity {
         if (user == null) {
             Toast.makeText(Detalle_Nota.this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show();
         } else {
-            String identificador_nota_importante = uid_usuario_R + titulo_R;
-
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Usuarios");
-            reference.child(firebaseAuth.getUid()).child("Mis notas importantes").child(identificador_nota_importante)
+            reference.child(firebaseAuth.getUid()).child("Mis notas importantes").child(id_nota_R)
                     .addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {

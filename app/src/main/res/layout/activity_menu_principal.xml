@@ -17,25 +17,26 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="180dp"
-            app:cardBackgroundColor="@color/teal_700"
+            app:cardBackgroundColor="#5499c7"
             app:cardUseCompatPadding="true"
             android:padding="0.2dp"
             app:cardCornerRadius="5dp">
+
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:weightSum="4">
-                
-                <ImageView
+
+                <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_weight="1"
                     android:layout_gravity="center"
                     android:layout_marginStart="2dp"
-                    android:src="@drawable/imagen_perfil"/>
+                    android:src="@drawable/imagen_perfil_usuario"/>
 
-                <!--Datos-->
+                <!--DATOS-->
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -77,7 +78,7 @@
                         android:orientation="horizontal"
                         android:visibility="gone">
 
-                        <!--Icono-->
+                        <!--ICONO-->
                         <androidx.appcompat.widget.AppCompatImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
@@ -96,11 +97,9 @@
                             android:layout_height="wrap_content"/>
 
 
-
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
-
-                    <!---CORREO-->
+                    <!--CORREO-->
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:id="@+id/Linear_Correo"
                         android:layout_width="match_parent"
@@ -108,12 +107,13 @@
                         android:orientation="horizontal"
                         android:visibility="gone">
 
-                        <!---Icono-->
+                        <!--ICONO-->
                         <androidx.appcompat.widget.AppCompatImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_gravity="center"
                             android:src="@drawable/correo_menu"/>
+
                         <!---CORREO-->
                         <TextView
                             android:id="@+id/CorreoPrincipal"
@@ -127,21 +127,22 @@
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
-                    <!---Verificacion-->
+                    <!--VERIFICACIÓN-->
                     <androidx.appcompat.widget.LinearLayoutCompat
-                        android:id="@+id/Linear_Verificacion"
+                        android:id="@+id/Linear_Verficacion"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:visibility="gone">
 
-                        <!---Icono-->
+                        <!--ICONO-->
                         <androidx.appcompat.widget.AppCompatImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_gravity="center"
                             android:src="@drawable/verificacion_principal"/>
-                        <!---Estado-->
+
+                        <!---ESTADO-->
                         <Button
                             android:id="@+id/EstadoCuentaPrincipal"
                             android:text="@string/EstadoCuentaPrincipal"
@@ -159,8 +160,6 @@
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
             </androidx.appcompat.widget.LinearLayoutCompat>
-
-
 
 
         </androidx.cardview.widget.CardView>

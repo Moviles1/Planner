@@ -6,27 +6,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.lunaplanner.ActualizarNota.Actualizar_Nota;
-import com.example.lunaplanner.Detalle.Detalle_Nota;
-import com.example.lunaplanner.ListarNotas.Listar_Notas;
-import com.example.lunaplanner.Objetos.Nota;
-import com.example.lunaplanner.R;
-import com.example.lunaplanner.ViewHolder.ViewHolder_Nota_Importante;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import org.jetbrains.annotations.NotNull;
+import com.example.lunaplanner.Objetos.Nota;
+import com.example.lunaplanner.R;
+import com.example.lunaplanner.ViewHolder.ViewHolder_Nota_Importante;
 
 public class Notas_Importantes extends AppCompatActivity {
 
@@ -35,9 +33,12 @@ public class Notas_Importantes extends AppCompatActivity {
     DatabaseReference Mis_Usuarios;
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
+
     FirebaseRecyclerAdapter<Nota, ViewHolder_Nota_Importante> firebaseRecyclerAdapter;
     FirebaseRecyclerOptions<Nota> firebaseRecyclerOptions;
     LinearLayoutManager linearLayoutManager;
+
+    Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +48,8 @@ public class Notas_Importantes extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setTitle("Notas importantes");
-        actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
-
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         RecyclerViewNotasImportantes = findViewById(R.id.RecyclerViewNotasImportantes);
         RecyclerViewNotasImportantes.setHasFixedSize(true);
@@ -58,6 +58,8 @@ public class Notas_Importantes extends AppCompatActivity {
         user = firebaseAuth.getCurrentUser();
 
         Mis_Usuarios = firebaseDatabase.getReference("Usuarios");
+
+        dialog = new Dialog(Notas_Importantes.this);
 
         ComprobarUsuario();
     }
@@ -72,11 +74,12 @@ public class Notas_Importantes extends AppCompatActivity {
 
     private void ListarNotasImportantes() {
         firebaseRecyclerOptions = new FirebaseRecyclerOptions.Builder<Nota>()
-                .setQuery(Mis_Usuarios.child(user.getUid()).child("Mis notas importantes"), Nota.class)
+                .setQuery(Mis_Usuarios.child(user.getUid()).child("Mis notas importantes").orderByChild("fecha_nota"), Nota.class)
                 .build();
+
         firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Nota, ViewHolder_Nota_Importante>(firebaseRecyclerOptions) {
             @Override
-            protected void onBindViewHolder(@NonNull ViewHolder_Nota_Importante viewHolder_nota_importante, int position, @NotNull Nota nota) {
+            protected void onBindViewHolder(@NonNull ViewHolder_Nota_Importante viewHolder_nota_importante, int position, @NonNull Nota nota) {
                 viewHolder_nota_importante.SetearDatos(
                         getApplicationContext(),
                         nota.getId_nota(),
@@ -98,32 +101,40 @@ public class Notas_Importantes extends AppCompatActivity {
                 viewHolder_nota_importante.setOnClickListener(new ViewHolder_Nota_Importante.ClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        // Obtener los datos de la nota seleccionada
-                        String id_nota = getItem(position).getId_nota();
-                        String uid_usuario = getItem(position).getUid_usuario();
-                        String correo_usuario = getItem(position).getCorreo_usuario();
-                        String fecha_registro = getItem(position).getFecha_hora_actual();
-                        String titulo = getItem(position).getTitulo();
-                        String descripcion = getItem(position).getDescripcion();
-                        String fecha_nota = getItem(position).getFecha_nota();
-                        String estado = getItem(position).getEstado();
-
-                        // Enviamos los datos a la siguiente actividad
-                        Intent intent = new Intent(Notas_Importantes.this, Detalle_Nota.class);
-                        intent.putExtra("id_nota", id_nota);
-                        intent.putExtra("uid_usuario", uid_usuario);
-                        intent.putExtra("correo_usuario", correo_usuario);
-                        intent.putExtra("fecha_registro", fecha_registro);
-                        intent.putExtra("titulo", titulo);
-                        intent.putExtra("descripcion", descripcion);
-                        intent.putExtra("fecha_nota", fecha_nota);
-                        intent.putExtra("estado", estado);
-                        startActivity(intent);
+                        // Acción al hacer clic en un ítem
                     }
 
                     @Override
                     public void onItemLongClick(View view, int position) {
-                        // Acción para el long click (aquí puedes definir lo que deseas hacer)
+                        String id_nota = getItem(position).getId_nota();
+
+                        // Declarar las vistas
+                        Button EliminarNota, EliminarNotaCancelar;
+
+                        // Conectar con el diseño del cuadro de diálogo
+                        dialog.setContentView(R.layout.cuadro_dialogo_eliminar_nota_importante);
+
+                        // Inicializar las vistas
+                        EliminarNota = dialog.findViewById(R.id.EliminarNota);
+                        EliminarNotaCancelar = dialog.findViewById(R.id.EliminarNotaCancelar);
+
+                        EliminarNota.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Eliminar_Nota_Importante(id_nota);
+                                dialog.dismiss();
+                            }
+                        });
+
+                        EliminarNotaCancelar.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(Notas_Importantes.this, "Cancelado por el usuario", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                            }
+                        });
+
+                        dialog.show();
                     }
                 });
                 return viewHolder_nota_importante;
@@ -131,11 +142,29 @@ public class Notas_Importantes extends AppCompatActivity {
         };
 
         linearLayoutManager = new LinearLayoutManager(Notas_Importantes.this, LinearLayoutManager.VERTICAL, false);
-        linearLayoutManager.setReverseLayout(true);
-        linearLayoutManager.setStackFromEnd(true);
-
         RecyclerViewNotasImportantes.setLayoutManager(linearLayoutManager);
         RecyclerViewNotasImportantes.setAdapter(firebaseRecyclerAdapter);
+    }
+
+    private void Eliminar_Nota_Importante(String id_nota) {
+        if (user == null) {
+            Toast.makeText(Notas_Importantes.this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show();
+        } else {
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Usuarios");
+            reference.child(firebaseAuth.getUid()).child("Mis notas importantes").child(id_nota)
+                    .removeValue()
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Toast.makeText(Notas_Importantes.this, "La nota ya no es importante", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(Notas_Importantes.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
     }
 
     @Override
