@@ -8,9 +8,14 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,7 +40,7 @@ import com.example.lunaplanner.ListarNotas.Listar_Notas;
 import com.example.lunaplanner.NotasImportantes.Notas_Importantes;
 import com.example.lunaplanner.Perfil.Perfil_Usuario;
 
-public class MenuPrincipal extends AppCompatActivity {
+public class MenuPrincipal extends AppCompatActivity implements SensorEventListener {
 
     Button AgregarNotas, ListarNotas, Importantes, Contactos, AcercaDe, CerrarSesion;
     FirebaseAuth firebaseAuth;
@@ -50,6 +55,13 @@ public class MenuPrincipal extends AppCompatActivity {
 
     LinearLayoutCompat Linear_Nombres, Linear_Correo, Linear_Verificacion;
     DatabaseReference Usuarios;
+
+    // Variables para manejar el sensor
+    private SensorManager sensorManager;
+    private Sensor accelerometer;
+    private float acelVal;
+    private float acelLast;
+    private float shake;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +99,15 @@ public class MenuPrincipal extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
+
+        // Inicializar el sensor
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+
+        acelVal = SensorManager.GRAVITY_EARTH;
+        acelLast = SensorManager.GRAVITY_EARTH;
+        shake = 0.00f;
 
         EstadoCuentaPrincipal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -288,5 +309,44 @@ public class MenuPrincipal extends AppCompatActivity {
             startActivity(new Intent(MenuPrincipal.this, Perfil_Usuario.class));
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        float x = event.values[0];
+        float y = event.values[1];
+        float z = event.values[2];
+
+        acelLast = acelVal;
+        acelVal = (float) Math.sqrt((double) (x * x + y * y + z * z));
+        float delta = acelVal - acelLast;
+        shake = shake * 0.9f + delta; // Filtro de paso bajo
+
+        if (shake > 12) { // Ajusta la sensibilidad
+            agregarNuevaNota();
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        // No es necesario implementar este método
+    }
+
+    private void agregarNuevaNota() {
+        Toast.makeText(this, "Agregando nueva nota...", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(MenuPrincipal.this, Agregar_Nota.class);
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener(this);
     }
 }
