@@ -31,7 +31,7 @@
     <string name="AgregarNotas">Agregar</string>
     <string name="ListarNotas">Mis Notas</string>
     <string name="Importantes">Importantes</string>
-    <string name="Perfil">Perfil</string>
+    <string name="Contactos">Contactos</string>
     <string name="AcercaDe">Acerca De</string>
     <string name="CerrarSesion">Salir</string>
 
@@ -50,6 +50,8 @@
     <string name="Agregar_Nota_BD">Agregar</string>
     <string name="Actualizar_Nota_BD">Actualizar</string>
     <string name="Vaciar_Todas_Las_Notas">Vaciar todas las notas</string>
+    <string name="Perfil_usuario">Perfil de Usuario</string>
+
 
     <!--Item Nota-->
     <string name="Id_nota_Item">Id nota</string>
@@ -82,6 +84,12 @@
     <!--Cuadro de dialogo - Cuenta Verificada-->
     <string name="CuentaVerificadaTXT">Cuenta Verificada</string>
     <string name="EntendidoVerificado">Entendio</string>
+
+
+    <!--CUADRO DE DIÁLOGO - ESTABLECER TELÉFONO-->
+    <string name="Establecer_Telefono">Escriba su teléfono</string>
+    <string name="Btn_Aceptar_Telefono">Aceptar</string>
+
 
     <!--CUADRO DE DIÁLOGO - ELIMINAR NOTA IMPORTANTE-->
     <string name="EliminarNotaImportanteTXT">¿Desea eliminar ésta nota importante de la lista?</string>
@@ -125,5 +133,20 @@
     <string name="Estado_Detalle"> Estado </string>
 
     <string name="Boton_Importante">Importante</string>
+
+
+    <!--Perfil del usuario-->
+    <string name="Uid_Perfil">Uid</string>
+    <string name="Nombres_Perfil">Mis nombres</string>
+    <string name="Apellidos_Perfil">Mis apellidos</string>
+    <string name="Correo_Perfil">Correo</string>
+    <string name="Edad_Perfil">Edad</string>
+    <string name="Telefono_Perfil">Teléfono</string>
+    <string name="Domicilio_Perfil">Domicilio</string>
+    <string name="Universidad_Perfil">Universidad</string>
+    <string name="Profesion_Perfil">Profesión</string>
+    <string name="Fecha_Nacimiento_Perfil">Fecha de nac.</string>
+    <string name="Guardar_Datos">Guardar datos</string>
+
 
 </resources>

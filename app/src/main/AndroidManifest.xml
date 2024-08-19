@@ -24,7 +24,8 @@
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
         <activity
             android:name=".Perfil.Perfil_Usuario"
-            android:exported="false" />
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+
         <activity
             android:name=".NotasImportantes.Notas_Importantes"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
@@ -40,7 +41,9 @@
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
         <activity
             android:name=".MenuPrincipal"
-            android:exported="false" />
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
+        </activity>
+
         <activity
             android:name=".Registro"
             android:exported="false"

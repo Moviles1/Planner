@@ -1,8 +1,8 @@
 package com.example.lunaplanner;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -10,9 +10,9 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -22,13 +22,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import java.util.HashMap;
 
 public class Registro extends AppCompatActivity {
 
-    EditText NombreEt, CorreoEt, Contrasena, ConfirmarContrasenaET;
+    EditText NombreEt, CorreoEt, ContrasenaEt, ConfirmarContrasenaEt;
     Button RegistrarUsuario;
     TextView TengounaCuentatxt;
 
@@ -43,18 +41,18 @@ public class Registro extends AppCompatActivity {
         setContentView(R.layout.activity_registro);
 
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle("Registrar");
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setDisplayShowHomeEnabled(true);
-        }
+        assert actionBar != null;
+        actionBar.setTitle("Registrar");
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
 
         NombreEt = findViewById(R.id.NombreEt);
         CorreoEt = findViewById(R.id.CorreoEt);
-        Contrasena = findViewById(R.id.Contrasena);
-        ConfirmarContrasenaET = findViewById(R.id.ConfirmarcontrasenaEt);
+        ContrasenaEt = findViewById(R.id.Contrasena);
+        ConfirmarContrasenaEt = findViewById(R.id.ConfirmarcontrasenaEt);
         RegistrarUsuario = findViewById(R.id.RegistrarUsuario);
         TengounaCuentatxt = findViewById(R.id.TengounaCuentatxt);
+
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -65,7 +63,7 @@ public class Registro extends AppCompatActivity {
         RegistrarUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ValidarDatos(view);
+                ValidarDatos();
             }
         });
 
@@ -77,22 +75,22 @@ public class Registro extends AppCompatActivity {
         });
     }
 
-    private void ValidarDatos(View view) {
+    private void ValidarDatos() {
         nombre = NombreEt.getText().toString();
         correo = CorreoEt.getText().toString();
-        password = Contrasena.getText().toString();
-        confirmarpassword = ConfirmarContrasenaET.getText().toString();
+        password = ContrasenaEt.getText().toString();
+        confirmarpassword = ConfirmarContrasenaEt.getText().toString();
 
         if (TextUtils.isEmpty(nombre)) {
-            Snackbar.make(view, "Ingrese nombre", Snackbar.LENGTH_SHORT).show();
+            Toast.makeText(this, "Ingrese nombre", Toast.LENGTH_SHORT).show();
         } else if (!Patterns.EMAIL_ADDRESS.matcher(correo).matches()) {
-            Snackbar.make(view, "Ingrese correo válido", Snackbar.LENGTH_SHORT).show();
+            Toast.makeText(this, "Ingrese correo válido", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(password)) {
-            Snackbar.make(view, "Ingrese contraseña minimo 6 digitos", Snackbar.LENGTH_SHORT).show();
+            Toast.makeText(this, "Ingrese contraseña", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(confirmarpassword)) {
-            Snackbar.make(view, "Confirme Contraseña", Snackbar.LENGTH_SHORT).show();
+            Toast.makeText(this, "Confirme contraseña", Toast.LENGTH_SHORT).show();
         } else if (!password.equals(confirmarpassword)) {
-            Snackbar.make(view, "Las contraseñas no coinciden", Snackbar.LENGTH_SHORT).show();
+            Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show();
         } else {
             CrearCuenta();
         }
@@ -112,13 +110,14 @@ public class Registro extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         progressDialog.dismiss();
-                        mostrarToast(e.getMessage());
+                        Toast.makeText(Registro.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
     private void GuardarInformacion() {
         progressDialog.setMessage("Guardando su Información");
+
         String uid = firebaseAuth.getUid();
 
         HashMap<String, String> Datos = new HashMap<>();
@@ -126,6 +125,14 @@ public class Registro extends AppCompatActivity {
         Datos.put("correo", correo);
         Datos.put("nombres", nombre);
         Datos.put("password", password);
+        Datos.put("apellidos", "");
+        Datos.put("edad", "");
+        Datos.put("telefono", "");
+        Datos.put("domicilio", "");
+        Datos.put("universidad", "");
+        Datos.put("profesion", "");
+        Datos.put("fecha_de_nacimiento", "");
+        Datos.put("imagen_perfil", "");
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Usuarios");
         databaseReference.child(uid)
@@ -134,7 +141,7 @@ public class Registro extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void unused) {
                         progressDialog.dismiss();
-                        mostrarToast("Cuenta creada con éxito");
+                        Toast.makeText(Registro.this, "Cuenta creada con éxito", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(Registro.this, MenuPrincipal.class));
                         finish();
                     }
@@ -142,14 +149,9 @@ public class Registro extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         progressDialog.dismiss();
-                        mostrarToast(e.getMessage());
+                        Toast.makeText(Registro.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
-    }
-
-    private void mostrarToast(String mensaje) {
-        // Muestra el Toast si no hay otro ya en cola
-        Toast.makeText(Registro.this, mensaje, Toast.LENGTH_SHORT).show();
     }
 
     @Override
