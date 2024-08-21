@@ -51,6 +51,7 @@
     <string name="Actualizar_Nota_BD">Actualizar</string>
     <string name="Vaciar_Todas_Las_Notas">Vaciar todas las notas</string>
     <string name="Perfil_usuario">Perfil de Usuario</string>
+    <string name="Actualizar_pass">Actualizar pass</string>
 
 
     <!--Item Nota-->
@@ -64,7 +65,6 @@
     <string name="Estado_Item"> No finalizado</string>
 
 
-
     <!--ITEM NOTA IMPORTANTE-->
     <string name="Id_nota_Item_I">Id nota</string>
     <string name="Uid_Usuario_Item_I"> Uid del usuario</string>
@@ -75,6 +75,15 @@
     <string name="Fecha_Item_I"> 00/00/0000 </string>
     <string name="Estado_Item_I"> No finalizado</string>
 
+    <!--ITEM Contacto-->
+    <string name="Id_c_Item">Id Contacto</string>
+    <string name="Uid_c_Item">Uid usuario</string>
+    <string name="nombres_c_Item">Nombres</string>
+    <string name="apellidos_c_Item">Apellidos</string>
+    <string name="correo_c_Item">Correo</string>
+    <string name="telefono_c_Item">Telefono</string>
+    <string name="edad_c_Item">Edad</string>
+    <string name="direccion_c_Item">Direccion</string>
 
     <!--Cuadro de dialogo opciones-->
     <string name="ElijaOpcionTXT">Elija una opcion</string>
@@ -89,6 +98,11 @@
     <!--CUADRO DE DIÁLOGO - ESTABLECER TELÉFONO-->
     <string name="Establecer_Telefono">Escriba su teléfono</string>
     <string name="Btn_Aceptar_Telefono">Aceptar</string>
+
+    <!--CUADRO DE DIÁLOGO - ESTABLECER TELÉFONO-->
+    <string name="ElegirImagenTXT">Escriba imagen de:</string>
+    <string name="Btn_Elegir_Galeria">Galeria</string>
+    <string name="Btn_Elegir_Camara">Camara</string>
 
 
     <!--CUADRO DE DIÁLOGO - ELIMINAR NOTA IMPORTANTE-->
@@ -147,6 +161,18 @@
     <string name="Profesion_Perfil">Profesión</string>
     <string name="Fecha_Nacimiento_Perfil">Fecha de nac.</string>
     <string name="Guardar_Datos">Guardar datos</string>
+
+    <!--Perfil del usuario [imagen de perfil]-->
+    <string name="BtnElegirImagenDe">Elegir imagen de</string>
+    <string name="BtnActualizarImagen">Actualizar imagen</string>
+
+    <!--Cambiar password-->
+    <string name="ActualizarPassTXT">Contraseña actual:</string>
+    <string name="ActualPass"> --</string>
+    <string name="EtActualPass">Contraseña actual</string>
+    <string name="EtNuevoPass">Nueva Contraseña</string>
+    <string name="EtRNuevoPass">Repetir nueva contraseña</string>
+    <string name="BtnActualizarPass">Actualizar</string>
 
 
 </resources>

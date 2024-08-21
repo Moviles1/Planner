@@ -41,9 +41,11 @@ public class Agregar_Nota extends AppCompatActivity {
         setContentView(R.layout.activity_agregar_nota);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("");
-        actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        if (actionBar != null) {
+            actionBar.setTitle("");
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+        }
 
         InicializarVariables();
         ObtenerDatos();

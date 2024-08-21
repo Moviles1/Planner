@@ -8,6 +8,9 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -17,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.lunaplanner.ActualizarPass.ActualizarPassUsuario;
 import com.example.lunaplanner.MenuPrincipal;
 import com.example.lunaplanner.R;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -41,7 +45,7 @@ public class Perfil_Usuario extends AppCompatActivity {
             Domicilio_Perfil, Universidad_Perfil,
             Profesion_Perfil;
 
-    ImageView Editar_Telefono, Editar_fecha;
+    ImageView Editar_Telefono, Editar_fecha, Editar_imagen;
 
     Button Guardar_Datos;
 
@@ -88,6 +92,13 @@ public class Perfil_Usuario extends AppCompatActivity {
                 ActualizarDatos();
             }
         });
+
+        Editar_imagen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Perfil_Usuario.this, Editar_imagen_perfil.class));
+            }
+        });
     }
 
     private void InicializarVariables() {
@@ -105,6 +116,7 @@ public class Perfil_Usuario extends AppCompatActivity {
 
         Editar_Telefono = findViewById(R.id.Editar_Telefono);
         Editar_fecha = findViewById(R.id.Editar_fecha);
+        Editar_imagen = findViewById(R.id.Editar_imagen);
 
         dialog_establecer_telefono = new Dialog(Perfil_Usuario.this);
 
@@ -261,6 +273,22 @@ public class Perfil_Usuario extends AppCompatActivity {
                         Toast.makeText(Perfil_Usuario.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_actualizar_pass, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.Actualizar_pass){
+            startActivity(new Intent(Perfil_Usuario.this, ActualizarPassUsuario.class));
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void ComprobarInicioSesion() {

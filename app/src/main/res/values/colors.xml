@@ -7,5 +7,5 @@
     <color name="colorPrimaryDark">#005b4f</color>
     <!-- res/values/colors.xml -->
     <color name="teal_700">#FF018786</color>
-
+    <color name="colorActionBar">#FF5722</color>
 </resources>

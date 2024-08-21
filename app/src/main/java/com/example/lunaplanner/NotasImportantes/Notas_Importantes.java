@@ -46,10 +46,11 @@ public class Notas_Importantes extends AppCompatActivity {
         setContentView(R.layout.activity_notas_archivadas);
 
         ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setTitle("Notas importantes");
-        actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        if (actionBar != null) {
+            actionBar.setTitle("Notas Importantes");
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+        }
 
         RecyclerViewNotasImportantes = findViewById(R.id.RecyclerViewNotasImportantes);
         RecyclerViewNotasImportantes.setHasFixedSize(true);
