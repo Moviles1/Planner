@@ -97,6 +97,9 @@ public class Agregar_Nota extends AppCompatActivity {
         Descripcion = findViewById(R.id.Descripcion);
         Btn_Calendario = findViewById(R.id.Btn_Calendario);
         BD_Firebase = FirebaseDatabase.getInstance().getReference();
+
+        // Asignar valor predeterminado al Estado si no se ha hecho en la UI
+        Estado.setText("Pendiente"); // o "Activo", según tu lógica
     }
 
     private void ObtenerDatos() {
@@ -122,8 +125,8 @@ public class Agregar_Nota extends AppCompatActivity {
         String estado = Estado.getText().toString();
         String id_nota = BD_Firebase.push().getKey();
 
-        if (!uid_usuario.equals("") && !correo_usuario.equals("") && !fecha_hora_actual.equals("") &&
-                !titulo.equals("") && !descripcion.equals("") && !fecha.equals("") && !estado.equals("")) {
+        if (!uid_usuario.isEmpty() && !correo_usuario.isEmpty() && !fecha_hora_actual.isEmpty() &&
+                !titulo.isEmpty() && !descripcion.isEmpty() && !fecha.isEmpty() && !estado.isEmpty()) {
 
             Nota nota = new Nota(id_nota, uid_usuario, correo_usuario, fecha_hora_actual, titulo, descripcion, fecha, estado);
             BD_Firebase.child("Notas_Publicadas").child(id_nota).setValue(nota);

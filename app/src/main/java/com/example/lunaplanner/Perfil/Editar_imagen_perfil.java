@@ -17,6 +17,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -42,7 +43,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.HashMap;
-
 
 public class Editar_imagen_perfil extends AppCompatActivity {
 
@@ -88,9 +88,9 @@ public class Editar_imagen_perfil extends AppCompatActivity {
         BtnActualizarImagen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(imagenUri == null){
+                if (imagenUri == null) {
                     Toast.makeText(Editar_imagen_perfil.this, "Inserte una nueva imagen", Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     subirImagenStorage();
                 }
             }
@@ -108,9 +108,7 @@ public class Editar_imagen_perfil extends AppCompatActivity {
         reference.child(user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //Obtener el dato imagen
-                String imagen_perfil = ""+snapshot.child("imagen_perfil").getValue();
-
+                String imagen_perfil = "" + snapshot.child("imagen_perfil").getValue();
                 Glide.with(getApplicationContext())
                         .load(imagen_perfil)
                         .placeholder(R.drawable.imagen_perfil_usuario)
@@ -119,16 +117,17 @@ public class Editar_imagen_perfil extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(Editar_imagen_perfil.this, "Error al cargar la imagen", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void subirImagenStorage(){
+    private void subirImagenStorage() {
         progressDialog.setMessage("Subiendo imagen");
         progressDialog.show();
+
         String carpetaImagenes = "ImagenesPerfil/";
-        String NombreImagen = carpetaImagenes+firebaseAuth.getUid();
+        String NombreImagen = carpetaImagenes + firebaseAuth.getUid() + ".jpg"; // Asegúrate de que la imagen tenga un nombre único
         StorageReference reference = FirebaseStorage.getInstance().getReference(NombreImagen);
         reference.putFile(imagenUri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -136,26 +135,24 @@ public class Editar_imagen_perfil extends AppCompatActivity {
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
                         while (!uriTask.isSuccessful());
-                        String uriImagen = ""+uriTask.getResult();
+                        String uriImagen = "" + uriTask.getResult();
                         ActualizarImagenBD(uriImagen);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-
-                        Toast.makeText(Editar_imagen_perfil.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                        Toast.makeText(Editar_imagen_perfil.this, "Fallo en la subida: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
-        }
+    }
 
     private void ActualizarImagenBD(String uriImagen) {
         progressDialog.setMessage("Actualizando la imagen");
         progressDialog.show();
 
         HashMap<String, Object> hashMap = new HashMap<>();
-        if(imagenUri != null){
-            hashMap.put("imagen-perfil", ""+uriImagen);
-        }
+        hashMap.put("imagen_perfil", uriImagen);
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Usuarios");
         databaseReference.child(user.getUid())
@@ -164,13 +161,14 @@ public class Editar_imagen_perfil extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void unused) {
                         progressDialog.dismiss();
-                        Toast.makeText(Editar_imagen_perfil.this, "Imagen se ha actualizado con exito", Toast.LENGTH_SHORT).show();
-                        onBackPressed();
+                        Toast.makeText(Editar_imagen_perfil.this, "Imagen actualizada con éxito", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(Editar_imagen_perfil.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                        Toast.makeText(Editar_imagen_perfil.this, "Error al actualizar imagen: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -186,35 +184,34 @@ public class Editar_imagen_perfil extends AppCompatActivity {
         Btn_Elegir_Galeria.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // SeleccionarImagenGaleria();
-                if (ContextCompat.checkSelfPermission(Editar_imagen_perfil.this,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
-                    SeleccionarImagenGaleria();
-                    dialog_elegir_imagen.dismiss();
-                }else{
-                    SolicitudPermisoGaleria.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                    dialog_elegir_imagen.dismiss();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    // Android 13 o superior
+                    if (ContextCompat.checkSelfPermission(Editar_imagen_perfil.this, Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED) {
+                        SeleccionarImagenGaleria();
+                    } else {
+                        SolicitudPermisoGaleria.launch(Manifest.permission.READ_MEDIA_IMAGES);
+                    }
+                } else {
+                    // Android 12 o inferior
+                    if (ContextCompat.checkSelfPermission(Editar_imagen_perfil.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                        SeleccionarImagenGaleria();
+                    } else {
+                        SolicitudPermisoGaleria.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
+                    }
                 }
-
+                dialog_elegir_imagen.dismiss();
             }
         });
-
 
         Btn_Elegir_Camara.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(Editar_imagen_perfil.this, "Elegir de Camara", Toast.LENGTH_SHORT).show();
-                //SeleccionarImagenCamara();
-              //  dialog_elegir_imagen.dismiss();
-
-                if(ContextCompat.checkSelfPermission(Editar_imagen_perfil.this,
-                        Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
+                if (ContextCompat.checkSelfPermission(Editar_imagen_perfil.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                     SeleccionarImagenCamara();
-                    dialog_elegir_imagen.dismiss();
-                }else {
+                } else {
                     SolicitudPermisoCamara.launch(Manifest.permission.CAMERA);
-                    dialog_elegir_imagen.dismiss();
                 }
+                dialog_elegir_imagen.dismiss();
             }
         });
 
@@ -222,24 +219,20 @@ public class Editar_imagen_perfil extends AppCompatActivity {
         dialog_elegir_imagen.setCanceledOnTouchOutside(true);
     }
 
-
-
     private void SeleccionarImagenGaleria() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         galeriaActivityResultLauncher.launch(intent);
     }
 
-    private ActivityResultLauncher<Intent> galeriaActivityResultLauncher = registerForActivityResult(
+    private final ActivityResultLauncher<Intent> galeriaActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult o) {
                     if (o.getResultCode() == Activity.RESULT_OK) {
-                        // Obtener uri de la imagen
                         Intent data = o.getData();
-                        Uri imagenUri = data.getData();
-                        // Setear la imagen seleccionada en el ImageView
+                        imagenUri = data.getData();
                         ImagenPerfilActualizar.setImageURI(imagenUri);
                     } else {
                         Toast.makeText(Editar_imagen_perfil.this, "Cancelado por el usuario", Toast.LENGTH_SHORT).show();
@@ -248,24 +241,20 @@ public class Editar_imagen_perfil extends AppCompatActivity {
             }
     );
 
-    /*Permiso para acceder a la galeria*/
-    private  ActivityResultLauncher<String> SolicitudPermisoGaleria =
+    private final ActivityResultLauncher<String> SolicitudPermisoGaleria =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
-                if (isGranted)
-                {
+                if (isGranted) {
                     SeleccionarImagenGaleria();
-                }else {
+                } else {
                     Toast.makeText(this, "Permiso denegado", Toast.LENGTH_SHORT).show();
                 }
             });
 
-    /*Permiso para acceder a la galeria*/
-    private  ActivityResultLauncher<String> SolicitudPermisoCamara =
+    private final ActivityResultLauncher<String> SolicitudPermisoCamara =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
-                if (isGranted)
-                {
+                if (isGranted) {
                     SeleccionarImagenCamara();
-                }else {
+                } else {
                     Toast.makeText(this, "Permiso denegado", Toast.LENGTH_SHORT).show();
                 }
             });
@@ -273,24 +262,22 @@ public class Editar_imagen_perfil extends AppCompatActivity {
     private void SeleccionarImagenCamara() {
         ContentValues values = new ContentValues();
         values.put(MediaStore.Images.Media.TITLE, "Nueva Imagen");
-        values.put(MediaStore.Images.Media.DESCRIPTION, "Descripcion de imagen");
+        values.put(MediaStore.Images.Media.DESCRIPTION, "Descripción de imagen");
         imagenUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imagenUri);
         camaraActivityResultLauncher.launch(intent);
-
-
     }
-    private ActivityResultLauncher<Intent> camaraActivityResultLauncher = registerForActivityResult(
+
+    private final ActivityResultLauncher<Intent> camaraActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == Activity.RESULT_OK){
+                    if (result.getResultCode() == Activity.RESULT_OK) {
                         ImagenPerfilActualizar.setImageURI(imagenUri);
-                    }
-                    else {
+                    } else {
                         Toast.makeText(Editar_imagen_perfil.this, "Cancelado por el usuario", Toast.LENGTH_SHORT).show();
                     }
                 }
