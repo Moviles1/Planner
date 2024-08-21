@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,6 +110,12 @@ public class Notas_Importantes extends AppCompatActivity {
                     @Override
                     public void onItemLongClick(View view, int position) {
                         String id_nota = getItem(position).getId_nota();
+
+                        // Vibración al mantener presionado
+                        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                        if (vibrator != null && vibrator.hasVibrator()) {
+                            vibrator.vibrate(100); // Vibrar durante 100 milisegundos
+                        }
 
                         // Declarar las vistas
                         Button EliminarNota, EliminarNotaCancelar;

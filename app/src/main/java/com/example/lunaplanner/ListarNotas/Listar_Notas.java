@@ -2,9 +2,12 @@ package com.example.lunaplanner.ListarNotas;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -137,6 +140,19 @@ public class Listar_Notas extends AppCompatActivity {
                         String descripcion = getItem(position).getDescripcion();
                         String fecha_nota = getItem(position).getFecha_nota();
                         String estado = getItem(position).getEstado();
+
+                        // Vibración al mantener presionado
+                        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                        if (vibrator != null) {
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                                // Para versiones de Android 26 (Oreo) y posteriores
+                                vibrator.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
+                            } else {
+                                // Para versiones anteriores
+                                vibrator.vibrate(100);
+                            }
+                        }
+
 
                         Button CD_Eliminar, CD_Actualizar;
 
