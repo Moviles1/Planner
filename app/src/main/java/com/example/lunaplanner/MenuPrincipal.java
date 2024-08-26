@@ -17,6 +17,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -62,6 +63,8 @@ public class MenuPrincipal extends AppCompatActivity implements SensorEventListe
     private float acelVal;
     private float acelLast;
     private float shake;
+    private long lastShakeTime = 0; // Tiempo del último shake
+    private static final long SHAKE_THRESHOLD_TIME = 1000; // 1 segundo
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,7 +163,7 @@ public class MenuPrincipal extends AppCompatActivity implements SensorEventListe
         AcercaDe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               informacion();
+                informacion();
             }
         });
 
@@ -238,7 +241,8 @@ public class MenuPrincipal extends AppCompatActivity implements SensorEventListe
         dialog_cuenta_verificada.show();
         dialog_cuenta_verificada.setCanceledOnTouchOutside(false);
     }
-    private void informacion(){
+
+    private void informacion() {
         Button EntendidoInfo;
 
         dialog_informacion.setContentView(R.layout.cuadro_dialogo_informacion);
@@ -341,7 +345,11 @@ public class MenuPrincipal extends AppCompatActivity implements SensorEventListe
         shake = shake * 0.9f + delta; // Filtro de paso bajo
 
         if (shake > 12) { // Ajusta la sensibilidad
-            agregarNuevaNota();
+            long currentTime = SystemClock.elapsedRealtime();
+            if (currentTime - lastShakeTime > SHAKE_THRESHOLD_TIME) {
+                lastShakeTime = currentTime;
+                agregarNuevaNota();
+            }
         }
     }
 
@@ -360,7 +368,6 @@ public class MenuPrincipal extends AppCompatActivity implements SensorEventListe
         intent.putExtra("Correo", correo_usuario);
         startActivity(intent);
     }
-
 
     @Override
     protected void onResume() {
