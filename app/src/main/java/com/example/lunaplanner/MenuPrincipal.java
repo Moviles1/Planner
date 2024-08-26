@@ -352,9 +352,15 @@ public class MenuPrincipal extends AppCompatActivity implements SensorEventListe
 
     private void agregarNuevaNota() {
         Toast.makeText(this, "Agregando nueva nota...", Toast.LENGTH_SHORT).show();
+        String uid_usuario = UidPrincipal.getText().toString();
+        String correo_usuario = CorreoPrincipal.getText().toString();
+
         Intent intent = new Intent(MenuPrincipal.this, Agregar_Nota.class);
+        intent.putExtra("Uid", uid_usuario);
+        intent.putExtra("Correo", correo_usuario);
         startActivity(intent);
     }
+
 
     @Override
     protected void onResume() {
