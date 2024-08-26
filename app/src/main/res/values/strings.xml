@@ -175,4 +175,12 @@
     <string name="BtnActualizarPass">Actualizar</string>
 
 
+    <!--Informacion de aplicacion-->
+    <string name="Desarrollador">Desarrollado por: Sutmi Samai Ramirez Ramirez y Diego Enrique Marquez Lugo</string>
+    <string name="CorreoSoporte">Soporte: Sut.dst@gmail.com</string>
+    <string name="Version">Version: 0.1</string>
+    <string name="EntendidoInfo">Entendido</string>
+
+
+
 </resources>

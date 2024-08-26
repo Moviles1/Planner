@@ -51,7 +51,7 @@ public class MenuPrincipal extends AppCompatActivity implements SensorEventListe
     ProgressBar progressBarDatos;
     ProgressDialog progressDialog;
 
-    Dialog dialog_cuenta_verificada;
+    Dialog dialog_cuenta_verificada, dialog_informacion;
 
     LinearLayoutCompat Linear_Nombres, Linear_Correo, Linear_Verificacion;
     DatabaseReference Usuarios;
@@ -79,6 +79,7 @@ public class MenuPrincipal extends AppCompatActivity implements SensorEventListe
         progressBarDatos = findViewById(R.id.progressBarDatos);
 
         dialog_cuenta_verificada = new Dialog(this);
+        dialog_informacion = new Dialog(this);
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Espere por favor...");
@@ -159,7 +160,7 @@ public class MenuPrincipal extends AppCompatActivity implements SensorEventListe
         AcercaDe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MenuPrincipal.this, "Acerca De", Toast.LENGTH_SHORT).show();
+               informacion();
             }
         });
 
@@ -236,6 +237,23 @@ public class MenuPrincipal extends AppCompatActivity implements SensorEventListe
 
         dialog_cuenta_verificada.show();
         dialog_cuenta_verificada.setCanceledOnTouchOutside(false);
+    }
+    private void informacion(){
+        Button EntendidoInfo;
+
+        dialog_informacion.setContentView(R.layout.cuadro_dialogo_informacion);
+
+        EntendidoInfo = dialog_informacion.findViewById(R.id.EntendidoInfo);
+
+        EntendidoInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog_informacion.dismiss();
+            }
+        });
+
+        dialog_informacion.show();
+        dialog_informacion.setCanceledOnTouchOutside(false);
     }
 
     @Override
